@@ -1,0 +1,58 @@
+use DB_AULA
+GO
+
+
+print 'Criando a Stproc: vl_fnl'
+
+
+/*
+	AUTOR: SAULO FIGUEREDO SANTANA
+	DIA: 15/10/2022
+
+	EX:vl_fnl
+
+*/
+
+
+if exists (select * from sysobjects where id = object_id('dbo.vl_fnl'))
+begin
+	Print 'Eliminando a versao anterior da procedure: vl_fnl'
+	Drop procedure dbo.vl_fnl
+end
+go
+
+
+create proc dbo.vl_fnl
+(
+  @idc		smallint = null
+ ,@vl_k		smallint = null
+
+)
+
+
+with encryption
+as
+--Variaveis de Controle
+
+Declare 
+	@soma smallint = 0
+
+
+if @idc IS NULL OR @vl_k  IS NULL
+begin
+		select 
+			@idc = 13
+		   ,@vl_k = 0
+end
+
+while  @vl_k < @idc
+	begin
+		set @vl_k = @vl_k + @vl_k
+		set @soma = @soma + @vl_k 
+	end
+
+Select @soma as soma
+go
+
+exec  dbo.vl_fnl
+go
