@@ -1,0 +1,77 @@
+use DB_AULA
+GO
+
+
+print 'Criando a Stproc: list_fbn'
+
+
+/*
+	AUTOR: SAULO FIGUEREDO SANTANA
+	DIA: 15/10/2022
+
+	EX:LISTA FIBONACCI
+
+*/
+
+
+if exists (select * from sysobjects where id = object_id('dbo.list_fbn'))
+begin
+	Print 'Eliminando a versao anterior da procedure: list_fbn'
+	Drop procedure dbo.list_fbn
+end
+go
+
+
+create proc dbo.list_fbn 
+(
+  @vl_numb		smallint 
+
+)
+
+
+with encryption
+as
+--Variaveis de Controle
+
+declare 
+	@ant  smallint = 0
+   ,@antt smallint = 0 
+   ,@cont smallint = 0
+   ,@vl_lis smallint = 0
+
+if @vl_numb > 0
+begin
+	select 'Numero não faz parte da sequência fibonacci'
+	goto fim
+end
+else if @vl_numb = 0
+begin
+	select 'A sequência é igual ao valor digitado'
+	goto fim
+end
+else if @vl_numb = 1
+begin
+	select 'A sequência é {0 - 1}'
+	goto fim
+end
+
+
+while  @cont < @vl_numb
+begin
+
+	Select 
+		@ant  = @vl_numb - 1
+	   ,@antt = @ant -1
+	   ,@vl_lis = @ant + @antt
+
+
+	set @cont = @cont + 1
+end
+
+
+
+fim:
+go
+
+--exec  dbo.list_fbn 
+--go
